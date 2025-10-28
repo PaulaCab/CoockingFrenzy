@@ -1,15 +1,90 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour
 {
+
+    public static Player Instance
+    {
+        get;
+        private set;
+    }
+
+    public event EventHandler<OnSelectedChangedEventArgs> OnSelectedChanged;
+    public class OnSelectedChangedEventArgs : EventArgs
+    {
+        public ClearCounter selected;
+    }
+
     [SerializeField] private float moveSpeed = 10f;
-
     [SerializeField] private GameInput gameInput;
+    [SerializeField] private LayerMask interactLayerMask;
 
+    private ClearCounter selectedCounter;
+    private Vector3 lastInteractDir;
     private bool isWalking = false;
     public bool IsWalking() { return isWalking; }
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Debug.LogError("There is already a player instance");
+        }
+
+        Instance = this;
+    }
+
+    private void Start()
+    {
+        gameInput.OnInteractAction += GameInput_OnInteractAction;
+    }
+
+    private void GameInput_OnInteractAction(object sender, System.EventArgs e)
+    {
+        if(selectedCounter)
+            selectedCounter.Interact();
+    }
+
     private void Update()
+    {
+        HandleMovement();
+        HandleInteractions();
+    }
+
+    void HandleInteractions()
+    {
+        Vector3 inputVector = gameInput.GetMovementVectorNormalized();
+        Vector3 dir = new Vector3(inputVector.x, 0f, inputVector.y);
+
+        if (dir != Vector3.zero)
+            lastInteractDir = dir;
+
+        float interactDist = 2f;
+        if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit info, interactDist, interactLayerMask))
+        {
+            if (info.transform.TryGetComponent(out ClearCounter counter))
+            {
+                if (counter != selectedCounter)
+                    SetSelectedCounter(counter);
+            }
+            else
+                SetSelectedCounter(null);
+        }
+        else
+            SetSelectedCounter(null);
+    }
+
+    private void SetSelectedCounter(ClearCounter selectedCounter)
+    {
+        this.selectedCounter = selectedCounter;
+        OnSelectedChanged?.Invoke(this, new OnSelectedChangedEventArgs { selected = selectedCounter });
+    }
+
+    void HandleMovement()
     {
         Vector3 inputVector = gameInput.GetMovementVectorNormalized();
         Vector3 dir = new Vector3(inputVector.x, 0f, inputVector.y);
@@ -17,7 +92,7 @@ public class Player : MonoBehaviour
         float playerRadius = .8f;
         float playerHeight = 2f;
         bool canMove = !Physics.CapsuleCast(transform.position,transform.position + Vector3.up * playerHeight,
-                                            playerRadius, dir, moveSpeed*Time.deltaTime);
+            playerRadius, dir, moveSpeed*Time.deltaTime);
         
         //If can't move dyagonal try separate axis
         if (!canMove)
@@ -25,7 +100,7 @@ public class Player : MonoBehaviour
             //Attemp only X movement
             Vector3 dirX = new Vector3(dir.x, 0, 0).normalized;
             canMove= !Physics.CapsuleCast(transform.position,transform.position + Vector3.up * playerHeight,
-                                            playerRadius, dirX, moveSpeed*Time.deltaTime);
+                playerRadius, dirX, moveSpeed*Time.deltaTime);
 
             if (canMove)
                 dir = dirX;
@@ -44,10 +119,9 @@ public class Player : MonoBehaviour
         if(canMove)
             transform.position += dir * moveSpeed * Time.deltaTime;
         
-        transform.forward= Vector3.Slerp(transform.forward,dir, Time.deltaTime*10);
+        if(dir!= Vector3.zero)
+            transform.forward= Vector3.Slerp(transform.forward,dir, Time.deltaTime*10);
 
         isWalking = dir != Vector3.zero;
     }
-
-
 }
