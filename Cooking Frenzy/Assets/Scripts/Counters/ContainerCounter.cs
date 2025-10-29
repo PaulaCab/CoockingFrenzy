@@ -17,6 +17,9 @@ public class ContainerCounter : BaseCounter, IKitchenObjParent
 
     public override void Interact(Player player)
     {
+        if (player.HasKitchenObj())
+            return;
+        
         GameObject obj = Instantiate(kitchenObjSO.prefab);
         obj.GetComponent<KitchenObj>().SetKitchenObjParent(player);
         OnObjGrabbed?.Invoke(this, EventArgs.Empty);
