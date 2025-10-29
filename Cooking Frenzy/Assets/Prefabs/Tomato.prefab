@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5763679325734855685}
+  - component: {fileID: 5594698337532351654}
   m_Layer: 0
   m_Name: Tomato
   m_TagString: Untagged
@@ -32,6 +33,19 @@ Transform:
   - {fileID: 101479959882634661}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5594698337532351654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7169786052450986385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 713c8c4d32ef1ba489ee018e4f49889c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kitchenObjSO: {fileID: 11400000, guid: f6982f87a76de9a458d58501c631e1b8, type: 2}
 --- !u!1001 &3855794277331796773
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -87,29 +101,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3812876574508226177, guid: 81e9fe7b3cd084242a088e945f531f38, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 9163284766023017974}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81e9fe7b3cd084242a088e945f531f38, type: 3}
---- !u!1 &101479959882634660 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3812876574508226177, guid: 81e9fe7b3cd084242a088e945f531f38, type: 3}
-  m_PrefabInstance: {fileID: 3855794277331796773}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &9163284766023017974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 101479959882634660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 713c8c4d32ef1ba489ee018e4f49889c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  kitchenObjSO: {fileID: 11400000, guid: f6982f87a76de9a458d58501c631e1b8, type: 2}
 --- !u!4 &101479959882634661 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3812876574508226176, guid: 81e9fe7b3cd084242a088e945f531f38, type: 3}
