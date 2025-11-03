@@ -4,9 +4,8 @@ public class BaseCounter : MonoBehaviour, IKitchenObjParent
 {
     [SerializeField] protected Transform topPoint;
     protected KitchenObj kitchenObj;
-    public virtual void Interact(Player player)
-    {
-    }
+    public virtual void Interact(Player player) { }
+    public virtual void InteractAlt(Player player) { }
     
     //IKitchenObjParent Implementation
     public Transform GetObjPoint() { return topPoint; }
