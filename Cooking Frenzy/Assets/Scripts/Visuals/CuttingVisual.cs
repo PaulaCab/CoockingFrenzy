@@ -19,7 +19,7 @@ public class CuttingVisual : MonoBehaviour
             counter.OnProgressChanged += Counter_OnProgressChanged;
     }
 
-    private void Counter_OnProgressChanged(object sender, CuttingCounter.OnProgressChangedEventArgs e)
+    private void Counter_OnProgressChanged(object sender, IHasProgress.OnProgressChangedEventArgs e)
     {
         if(e.progressNormalized>0)
             animator.SetTrigger(CUT);
