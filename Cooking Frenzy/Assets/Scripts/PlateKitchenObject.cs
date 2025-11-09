@@ -12,6 +12,7 @@ public class PlateKitchenObject : KitchenObj
 
     [SerializeField] private List<KitchenObjSO> validObjList;
     private List<KitchenObjSO> ingredientList = new List<KitchenObjSO>();
+    public List<KitchenObjSO> GetIngredientList(){return ingredientList;}
     
     public bool TryAddIngredient(KitchenObjSO ingredientSO)
     {
