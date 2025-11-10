@@ -24,6 +24,9 @@ public class DeliveryManager : MonoBehaviour
     private float spawnTimer = 0;
     [SerializeField] private float spawnTimerMax = 4f;
     [SerializeField] private int waitingRecipesMax = 4;
+    
+    private int deliveredRecipes = 0;
+    public int GetDeliveredRecipes() { return deliveredRecipes;}
 
     private void Awake()
     {
@@ -55,6 +58,7 @@ public class DeliveryManager : MonoBehaviour
                 waitingRecipeList.Remove(recipe);
                 OnRecipeComplete?.Invoke(this, new OnRecipeEventArgs{recipeSO = recipe});
                 OnRecipeSuccess?.Invoke(this, EventArgs.Empty);
+                deliveredRecipes++;
                 return;
             }
         }
