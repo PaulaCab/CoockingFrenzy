@@ -6,6 +6,8 @@ using Random = UnityEngine.Random;
 
 public class DeliveryManager : MonoBehaviour
 {
+    public event EventHandler OnRecipeSuccess;
+    public event EventHandler OnRecipeFail;
     public event EventHandler<OnRecipeEventArgs> OnRecipeSpawn;
     public event EventHandler<OnRecipeEventArgs> OnRecipeComplete;
     public class OnRecipeEventArgs : EventArgs
@@ -18,6 +20,7 @@ public class DeliveryManager : MonoBehaviour
     private List<RecipeSO> waitingRecipeList = new List<RecipeSO>();
     public List<RecipeSO> GetWaitingRecipeList(){return waitingRecipeList;}
 
+    public DeliveryCounter deliveryCounter;
     private float spawnTimer = 0;
     [SerializeField] private float spawnTimerMax = 4f;
     [SerializeField] private int waitingRecipesMax = 4;
@@ -51,9 +54,12 @@ public class DeliveryManager : MonoBehaviour
             {
                 waitingRecipeList.Remove(recipe);
                 OnRecipeComplete?.Invoke(this, new OnRecipeEventArgs{recipeSO = recipe});
-                break;
+                OnRecipeSuccess?.Invoke(this, EventArgs.Empty);
+                return;
             }
         }
+        
+        OnRecipeFail?.Invoke(this, EventArgs.Empty);
     }
 
     private bool CheckRecipeMatch(RecipeSO recipe, PlateKitchenObject plate)

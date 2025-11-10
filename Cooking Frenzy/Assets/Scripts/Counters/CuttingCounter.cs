@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class CuttingCounter : BaseCounter, IHasProgress
 {
+    public static event EventHandler OnCut; 
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
     [SerializeField] private CuttingRecipeSO[] cuttingRecipes;
 
@@ -43,6 +44,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
             return;
         
         cuttingProgress++;
+        OnCut?.Invoke(this, EventArgs.Empty);
         OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
         {
             progressNormalized = (float)cuttingProgress/recipe.cuttingProgressMax

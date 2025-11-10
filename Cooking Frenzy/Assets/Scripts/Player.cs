@@ -12,6 +12,7 @@ public class Player : MonoBehaviour, IKitchenObjParent
         private set;
     }
 
+    public event EventHandler OnPick;
     public event EventHandler<OnSelectedChangedEventArgs> OnSelectedChanged;
     public class OnSelectedChangedEventArgs : EventArgs
     {
@@ -137,7 +138,14 @@ public class Player : MonoBehaviour, IKitchenObjParent
     //IKitchenObjParent Implementation
     public Transform GetObjPoint() { return holdPoint; }
     public KitchenObj GetKitchenObj() {return kitchenObj;}
-    public void SetKitchenObj(KitchenObj kitchenObj) { this.kitchenObj = kitchenObj;}
+
+    public void SetKitchenObj(KitchenObj kitchenObj)
+    {
+        this.kitchenObj = kitchenObj;
+        
+        if(kitchenObj)
+            OnPick?.Invoke(this, EventArgs.Empty);
+    }
     public void ClearKitchenObj() { kitchenObj = null;}
     public bool HasKitchenObj() { return kitchenObj != null;}
 
